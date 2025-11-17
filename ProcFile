@@ -1,0 +1,1 @@
+web: gunicorn attendace_system.wsgi --log-file -
