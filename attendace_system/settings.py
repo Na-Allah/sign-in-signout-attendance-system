@@ -26,9 +26,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY =  'yfx6pj=*z9bs8a961isz3q@)72p%#%t&^h0@!5*^hg^0=+7g3l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "attendance.onrender.com",
+]
+
 
 
 # Application definition
