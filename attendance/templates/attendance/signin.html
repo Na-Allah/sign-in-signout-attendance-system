@@ -1,0 +1,49 @@
+{% extends 'attendance/base.html' %}
+{% load static %}
+{% block content %}
+<h2>Attendance</h2>
+
+<p>Welcome, {{ user.username }}!</p>
+
+<!-- SIGN-IN FORM -->
+<form method="post" id="signinForm" action="{% url 'signin' %}">
+    {% csrf_token %}
+  <input type="hidden" name="latitude" id="signin-latitude">
+  <input type="hidden" name="longitude" id="signin-longitude">
+  <button type="submit">Sign In</button>
+</form>
+
+<!-- SIGN-OUT FORM -->
+<form method="post" id="signoutForm" action="{% url 'signout' %}" style="margin-top: 15px;">
+  {% csrf_token %}
+  <input type="hidden" name="latitude" id="signout-latitude">
+  <input type="hidden" name="longitude" id="signout-longitude">
+  <button type="submit">Sign Out</button>
+</form>
+
+<script>
+function attachGeoToForm(formId, latId, lonId) {
+  const form = document.getElementById(formId);
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        document.getElementById(latId).value = position.coords.latitude;
+        document.getElementById(lonId).value = position.coords.longitude;
+        form.submit();
+      }, (error) => {
+        alert("Location access denied. Please enable GPS to sign in/out.");
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  attachGeoToForm("signinForm", "signin-latitude", "signin-longitude");
+  attachGeoToForm("signoutForm", "signout-latitude", "signout-longitude");
+});
+</script>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'attendance/base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Attendance History</h2>
+
+<table border="1" cellspacing="0" cellpadding="6">
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Date</th>
+      <th>Sign-In Time</th>
+      <th>Sign-Out Time</th>
+      <th>Arrival</th>
+      <th>Absent</th>
+      <th>Remarks</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for attendance in attendance %}
+    <tr>
+      <td>{{ attendance.employee }}</td>
+      <td>{{ attendance.date }}</td>
+      <td>{% if attendance.sign_in_time %}{{ attendance.sign_in_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
+      <td>{% if attendance.sign_out_time %}{{ attendance.sign_out_time|date:"H:i:s" }}{% else %}-{% endif %}</td>
+      <td>
+        {% if attendance.is_late != None%}
+          <span style="color: orange; font-weight: bold;">Late</span>
+        {% else %}
+          <span style="color: green;">On Time</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if attendance.is_absent %}
+          <span style="color: red; font-weight: bold;">Absent</span>
+        {% else %}
+          <span>-</span>
+        {% endif %}
+      </td>
+      <td>{{ attendance.remarks|default:"-" }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="8">No attendance attendances found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
